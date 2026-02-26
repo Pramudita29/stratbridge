@@ -7,15 +7,14 @@ import Navbar from '../components/Navbar/Navbar';
 
 const GOOGLE_FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeGYyxFhGLkIPsgpLfCOkYWwS4DrockShZscPNxbe8mkEjZBg/formResponse";
 
-// Updated to match your pre-fill link exactly
 const ENTRY_IDS = {
-    name: 'entry.2117875584',         // "Test"
-    district: 'entry.1718190618',     // "Test" (Your link used this for district/email)
-    age: 'entry.1199713018',          // "18-25"
-    contact: 'entry.1657225923',      // "9392948593"
-    profession: 'entry.976442586',    // "Student"
-    concerns: 'entry.1705009081',     // "Test, test, test, test"
-    suggestions: 'entry.648304'       // "oijdf ioiu..."
+    name: 'entry.2117875584',
+    district: 'entry.1718190618',
+    age: 'entry.1199713018',
+    contact: 'entry.1657225923',
+    profession: 'entry.976442586',
+    concerns: 'entry.1705009081',
+    suggestions: 'entry.648304'
 };
 
 const DISTRICTS = [
@@ -120,7 +119,6 @@ const AgendaStepPage = () => {
     const [selectedConcerns, setSelectedConcerns] = useState([]);
     const [errors, setErrors] = useState({});
 
-    // Refs for auto-scrolling
     const ageRef = useRef(null);
     const contactRef = useRef(null);
     const professionRef = useRef(null);
@@ -148,8 +146,6 @@ const AgendaStepPage = () => {
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             toast.error("Please fill in the required fields.");
-
-            // Scroll to the first error
             if (newErrors.age) ageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             else if (newErrors.contact) contactRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             else if (newErrors.profession) professionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -176,7 +172,6 @@ const AgendaStepPage = () => {
 
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
-
         const newErrors = {};
         if (selectedConcerns.length === 0) newErrors.concerns = true;
         if (!formData.suggestions) newErrors.suggestions = true;
@@ -242,42 +237,59 @@ const AgendaStepPage = () => {
             </div>
 
             <main className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 pt-28 md:pt-40 pb-20 md:pb-32">
-                <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">
 
-                    <div className="lg:w-1/3">
-                        <div className="lg:sticky lg:top-40 space-y-8 md:space-y-12">
-                            <div className="space-y-4 md:space-y-6">
-                                <h2 className={labelStyle}>Beyond Voting: The Agenda Cohort</h2>
-                                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-[#13231F]">
-                                    “भोलिको लागि हाम्रो एजेन्डा”<br />
-                                    <span className="text-[#2D5A43] font-medium text-2xl sm:text-3xl md:text-4xl">“Your Agenda for Tomorrow”</span>
-                                </h1>
-                                <div className="h-[2px] w-20 bg-[#2D5A43]" />
-                            </div>
+                {/* TOP HEADER SECTION */}
+                <div className="w-full mb-16 md:mb-24 text-center md:text-left">
+                    <h2 className={labelStyle}>Beyond Voting: The Agenda Cohort</h2>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-[#13231F] mt-4">
+                        “भोलिको लागि तपाईंको एजेन्डा”<br />
+                        <span className="text-[#2D5A43] font-medium text-2xl sm:text-3xl md:text-4xl lg:text-5xl">“Your Agenda for Tomorrow”</span>
+                    </h1>
+                    <div className="h-[2px] w-20 bg-[#2D5A43] mt-8 mx-auto md:mx-0" />
+                </div>
 
-                            <div className="space-y-6 md:space-y-10">
-                                <AnimatePresence mode="wait">
-                                    {step === 1 ? (
-                                        <motion.div key="t1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
-                                            <p className="text-lg md:text-xl text-[#13231F] font-medium">First, help us understand the perspective behind the vision.</p>
-                                            <p className={bodyTextStyle}>तपाईंको पेशा र ठेगानाले तपाईंको दृष्टिकोणलाई बुझ्न मद्दत गर्नेछ।</p>
-                                        </motion.div>
-                                    ) : (
-                                        <motion.div key="t2" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
-                                            <p className="text-lg md:text-xl text-[#13231F] font-medium">Define the roadmap. What needs to change?</p>
-                                            <p className={bodyTextStyle}>२०८२ को लागि कार्यदिशा तय गर्नुहोस्। आफ्ना मुख्य सरोकारहरू र ठोस नीतिगत सुझावहरू उल्लेख गर्नुहोस्।</p>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </div>
+                <div className="flex flex-col lg:flex-row gap-16 md:gap-24">
+                    {/* LEFT SIDEBAR - DYNAMIC CONTENT */}
+                    <div className="lg:w-1/3 space-y-8">
+                        <div className="sticky top-40">
+                            <AnimatePresence mode="wait">
+                                {step === 1 ? (
+                                    <motion.div key="ident" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }}>
+                                        <h2 className="text-4xl md:text-5xl font-bold tracking-tighter leading-none text-[#13231F]">
+                                            YOUR<br />IDENTIFICATION
+                                        </h2>
+                                        <h3 className="text-2xl md:text-3xl font-medium text-[#2D5A43] mt-2 tracking-tight">
+                                            तपाईंको पहिचान
+                                        </h3>
+                                        <div className="h-[1px] w-12 bg-[#2D5A43] my-8" />
+                                        <p className={bodyTextStyle}>
+                                            Please provide your basic details so we can understand the context of your vision.
+                                        </p>
+                                        <p className="font-sans text-base text-[#13231F]/60 mt-2">
+                                            तपाईंको दृष्टिकोणलाई सही रूपमा बुझ्नका लागि कृपया आफ्नो सामान्य विवरणहरू उपलब्ध गराउनुहोस्।
+                                        </p>
+                                    </motion.div>
+                                ) : step === 2 ? (
+                                    <motion.div key="roadmap" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }}>
+                                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-[#13231F]">
+                                            Define the roadmap.<br />What needs to change?
+                                        </h2>
+                                        <div className="h-[1px] w-12 bg-[#2D5A43] my-8" />
+                                        <p className="text-lg md:text-xl text-[#2D5A43] font-medium leading-relaxed">
+                                            २०८२ को लागि कार्यदिशा तय गर्नुहोस्। आफ्ना मुख्य सरोकारहरू र ठोस नीतिगत सुझावहरू उल्लेख गर्नुहोस्।
+                                        </p>
+                                    </motion.div>
+                                ) : null}
+                            </AnimatePresence>
                         </div>
                     </div>
 
+                    {/* RIGHT FORM AREA */}
                     <div className="lg:w-2/3">
                         <AnimatePresence mode="wait">
                             {step === 1 && (
                                 <motion.div key="s1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-12 md:space-y-16">
-                                    <div className="space-y-8 md:space-y-12">
+                                    <div className="space-y-12">
                                         <div className="space-y-4">
                                             <label className={labelStyle}>Full Name / पूरा नाम</label>
                                             <input
@@ -289,7 +301,7 @@ const AgendaStepPage = () => {
                                             />
                                         </div>
 
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
                                             <div className="space-y-4">
                                                 <label className={labelStyle}>District / जिल्ला</label>
                                                 <CustomSelect
@@ -324,36 +336,36 @@ const AgendaStepPage = () => {
                                                 {errors.contact && <span className={redDisclaimer}>Field Required</span>}
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="space-y-6 md:space-y-8" ref={professionRef}>
-                                        <label className={`${labelStyle} ${errors.profession ? 'text-red-500' : ''}`}>Select Profession / पेशा वा भूमिका *</label>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
-                                            {PROFESSIONS.map(p => (
-                                                <button
-                                                    key={p.en}
-                                                    type="button"
-                                                    onClick={() => { setFormData({ ...formData, profession: p.en }); setErrors(prev => ({ ...prev, profession: false })) }}
-                                                    className={`group text-left p-4 rounded-xl border transition-all duration-200 ${formData.profession === p.en ? 'border-[#2D5A43] bg-[#2D5A43] text-white shadow-lg' : errors.profession ? 'border-red-500 bg-white' : 'border-black/5 bg-white hover:border-[#2D5A43]/40'}`}
-                                                >
-                                                    <p className="text-[14px] font-sans font-medium mb-1">{p.en}</p>
-                                                    <p className="text-[12px] opacity-70">{p.ne}</p>
-                                                </button>
-                                            ))}
+                                        <div className="space-y-6 md:space-y-8" ref={professionRef}>
+                                            <label className={`${labelStyle} ${errors.profession ? 'text-red-500' : ''}`}>Select Profession / पेशा वा भूमिका *</label>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                {PROFESSIONS.map(p => (
+                                                    <button
+                                                        key={p.en}
+                                                        type="button"
+                                                        onClick={() => { setFormData({ ...formData, profession: p.en }); setErrors(prev => ({ ...prev, profession: false })) }}
+                                                        className={`group text-left p-4 rounded-xl border transition-all duration-200 ${formData.profession === p.en ? 'border-[#2D5A43] bg-[#2D5A43] text-white shadow-lg' : errors.profession ? 'border-red-500 bg-white' : 'border-black/5 bg-white hover:border-[#2D5A43]/40'}`}
+                                                    >
+                                                        <p className="text-[14px] font-sans font-medium mb-1">{p.en}</p>
+                                                        <p className="text-[12px] opacity-70">{p.ne}</p>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            {errors.profession && <span className={redDisclaimer}>Selection Required</span>}
+                                            {formData.profession === 'Other' && (
+                                                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pt-4">
+                                                    <label className={labelStyle}>Specify Profession *</label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Your specific profession"
+                                                        className="w-full bg-transparent border-b-2 border-black/5 py-3 text-lg focus:border-[#2D5A43] outline-none"
+                                                        value={formData.otherProfession}
+                                                        onChange={e => setFormData({ ...formData, otherProfession: e.target.value })}
+                                                    />
+                                                </motion.div>
+                                            )}
                                         </div>
-                                        {errors.profession && <span className={redDisclaimer}>Selection Required</span>}
-                                        {formData.profession === 'Other' && (
-                                            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pt-4">
-                                                <label className={labelStyle}>Specify Profession *</label>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Your specific profession"
-                                                    className="w-full bg-transparent border-b-2 border-black/5 py-3 text-lg focus:border-[#2D5A43] outline-none"
-                                                    value={formData.otherProfession}
-                                                    onChange={e => setFormData({ ...formData, otherProfession: e.target.value })}
-                                                />
-                                            </motion.div>
-                                        )}
                                     </div>
 
                                     <button onClick={nextStep} className="w-full bg-[#13231F] text-white py-6 md:py-8 rounded-2xl text-[12px] font-bold uppercase tracking-[0.2em] hover:bg-[#2D5A43] transition-all shadow-xl">Proceed to Vision</button>
@@ -367,7 +379,7 @@ const AgendaStepPage = () => {
                                             <label className={`${labelStyle} ${errors.concerns ? 'text-red-500' : ''}`}>Core Concerns / सरोकारका मुख्य विषयहरू *</label>
                                             <p className="text-sm text-black/50">Select all that apply.</p>
                                         </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             {CONCERNS.map((item) => (
                                                 <button
                                                     key={item.id}
@@ -457,8 +469,7 @@ const AgendaStepPage = () => {
                                 <h3 className="text-2xl font-bold">Example Suggestions</h3>
                                 <div className="space-y-4 text-black/70 leading-relaxed">
                                     <p className="font-medium text-black">What a concrete suggestion looks like:</p>
-                                    <p>"To improve public transport in Kathmandu, we should implement a bus rapid transit (BRT) system on the Ring Road and digitize all ticketing to reduce corruption and improve efficiency.”
-                                    </p>
+                                    <p>"To improve public transport in Kathmandu, we should implement a bus rapid transit (BRT) system on the Ring Road and digitize all ticketing to reduce corruption and improve efficiency.”</p>
                                     <div className="h-[1px] bg-black/5 w-full" />
                                     <p className="italic text-sm">You can write in English, Nepali, or Romanized Nepali.</p>
                                 </div>

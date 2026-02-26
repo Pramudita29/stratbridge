@@ -1,13 +1,12 @@
 'use client';
 import { motion } from 'framer-motion';
-import { ArrowRight, Calendar, MapPin, Send, Zap } from 'lucide-react';
+import { ArrowRight, ChevronDown, Globe, Send, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar/Navbar';
 
 const ProposalPage = () => {
     const [hoveredId, setHoveredId] = useState(null);
-    //  const labelStyle = "font-sans font-bold text-[10px] md:text-[12px] uppercase tracking-[0.2em] text-[#2D5A43]";
 
     const fadeIn = {
         initial: { opacity: 0, y: 15 },
@@ -64,7 +63,7 @@ const ProposalPage = () => {
             </motion.div>
 
             {/* HERO SECTION */}
-            <section className="pt-32 md:pt-44 pb-12 md:pb-20 px-6 md:px-10 lg:px-20 max-w-7xl mx-auto">
+            <section className="relative min-h-[90vh] flex flex-col justify-center pt-32 md:pt-44 pb-12 md:pb-20 px-6 md:px-10 lg:px-20 max-w-7xl mx-auto">
                 <div className="grid lg:grid-cols-12 gap-10 md:gap-16 items-start">
                     <motion.div {...fadeIn} className="lg:col-span-8">
                         <div className="flex items-center gap-3 mb-6">
@@ -78,9 +77,8 @@ const ProposalPage = () => {
                             Largest Grassroots Agenda-Setting Exercise for Nepal
                         </p>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 font-sans text-[10px] md:text-[11px] font-bold uppercase tracking-wider opacity-60 border-t border-[#13231F]/10 pt-8">
-                            <div className="flex items-center gap-3"><Calendar size={14} /> Magh – Falgun 2082</div>
-                            <div className="flex items-center gap-3"><MapPin size={14} /> Nationwide (7 Provinces)</div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 font-sans text-[10px] md:text-[11px] font-bold uppercase tracking-wider opacity-60 border-t border-[#13231F]/10 pt-8">
+                            <div className="flex items-center gap-3"><Globe size={14} /> Worldwide (देश-विदेशमा रहेका नेपालीहरू)</div>
                             <div className="flex items-center gap-3"><Zap size={14} /> Election Focus Edition</div>
                         </div>
                     </motion.div>
@@ -91,6 +89,24 @@ const ProposalPage = () => {
                         </Link>
                     </motion.div>
                 </div>
+
+                {/* EYE-CATCHING SCROLL INDICATOR */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.5 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
+                >
+                    <span className="font-sans text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-[#2D5A43] animate-pulse">
+                        Explore Details
+                    </span>
+                    <motion.div
+                        animate={{ y: [0, 8, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                        <ChevronDown size={20} className="text-[#2D5A43]" />
+                    </motion.div>
+                </motion.div>
             </section>
 
             {/* SUB-HEADLINE */}
@@ -148,34 +164,6 @@ const ProposalPage = () => {
                     ))}
                 </div>
             </section>
-
-            {/* SPONSORS SECTION */}
-            {/* <div className="mt-12 py-20 px-6 border-t border-black/5 bg-white/30">
-                <div className="text-center space-y-4 mb-12 md:mb-16">
-                    <p className={labelStyle}>Strategic Partners / सहकार्य</p>
-                    <h3 className="text-3xl md:text-4xl font-bold text-[#13231F] tracking-tight">Supporting the Vision</h3>
-                </div>
-
-                <div className="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 max-w-7xl mx-auto">
-                    <a href="https://robinlawandpolicy.com" target="_blank" rel="noopener noreferrer"
-                        className="group relative flex flex-col p-8 md:p-10 bg-white border border-black/5 rounded-[2rem] hover:shadow-2xl transition-all duration-500 w-full max-w-md">
-                        <div className="h-24 md:h-32 w-full bg-[#13231F] rounded-2xl flex items-center justify-center mb-6 md:mb-8 overflow-hidden">
-                            <img src={robinLogo} alt="Robin Law" className="max-h-16 md:max-h-20 max-w-[80%] object-contain brightness-200 group-hover:grayscale-0 transition-all" />
-                        </div>
-                        <h4 className="text-lg md:text-xl font-bold text-[#13231F] group-hover:text-[#2D5A43] mb-4">Robin Law & Policy Associates</h4>
-                        <p className="text-sm md:text-[15px] text-black/60 leading-relaxed">Premier legal firm specializing in policy research and strategic advocacy.</p>
-                    </a>
-
-                    <a href="https://kumaritrust.com" target="_blank" rel="noopener noreferrer"
-                        className="group relative flex flex-col p-8 md:p-10 bg-white border border-black/5 rounded-[2rem] hover:shadow-2xl transition-all duration-500 w-full max-w-md">
-                        <div className="h-24 md:h-32 w-full bg-[#FAF9F6] rounded-2xl flex items-center justify-center mb-6 md:mb-8">
-                            <img src={kumariLogo} alt="Kumari Trust" className="max-h-16 md:max-h-20 max-w-[80%] object-contain grayscale group-hover:grayscale-0 transition-all" />
-                        </div>
-                        <h4 className="text-lg md:text-xl font-bold text-[#13231F] group-hover:text-[#2D5A43] mb-4">Kumari Trust</h4>
-                        <p className="text-sm md:text-[15px] text-black/60 leading-relaxed">Dedicated to empowering communities through sustainable health and education projects.</p>
-                    </a>
-                </div>
-            </div> */}
 
             {/* CONCLUSION */}
             <section className="py-24 md:py-40 px-6 md:px-10 max-w-4xl mx-auto text-center">
